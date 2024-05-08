@@ -1,0 +1,49 @@
+
+<section>
+    <h1>Signaux créés avec toSignal() -> non modifiable</h1>
+    <h2>appartments2_v1 = toSignal(this.signalService.appartments2$)</h2>
+    <p *ngFor="let item of appartments2_v1()">{{item.name}}</p>
+    <h2>appartments2_v2 = this.signalService.appartments2</h2>
+    <p *ngFor="let item of appartments2_v2()">{{item.id}}</p>
+    <!-- <p *ngFor="let item of modifiableAppartments">{{item.name}}</p> -->
+</section>
+
+<section>
+    <h1>Signal modifiable dont la valeur est initialisée après la souscription à un observable</h1>
+    <h2>modifiableAppartments2: WritableSignal(Appartment[]> = this.signalService.modifiableAppartments</h2>
+    <div *ngFor="let item of modifiableAppartments2()" style="display: flex; gap: 30px;">
+        <b >{{item.id}} {{item.name}} </b>
+        <input type="text" [(ngModel)]="item.name" (change)="updateAppartmentName(item)">
+    </div>
+</section>
+
+<section>
+    <h1>Signal computed qui renvoie le 1er élément du tableau du signal modifiedAppartment</h1>
+    @if (appart1()) {
+        <p>APPART 1 : <b>{{appart1()?.name}}</b></p>
+    } @else {
+        <p>NO APPART 1</p>
+    }
+</section>
+
+<section>
+    <h1>Compteur + computed signal avec untracked sur compteur</h1>
+    <p>Le computed signal countedAppart1 dépend des signaux appart1 et counter mais ne se met à jour que lorsque appart1 est modifié</p>
+    <div style="display: flex; gap: 30px;">
+        <p>Compteur : <b>{{counter()}}</b></p>
+        <button type="button" (click)="incrementCounter()">Incrémenter</button>
+    </div>
+    <p>Signal countedAppart1 (tracked = appart1 ; untracked = counter) ==> <b>{{countedAppart1()}}</b>  </p>
+</section>
+
+<section>
+    <h1>MAJ de signaux sous conditions</h1>
+    <p>computedCounter prend une valeur quand la condition est remplie, mais impossible de conserver la valeur précédente si la condition n'est pas remplie lors de la mise à jour d'un des 2 signaux dont computedCounter dépend</p>
+    <p>suitableComputedCounter est un signal mis à jour via un effect lorsque une condition est remplie</p>
+    <div style="display: flex; gap: 30px;">
+        <p>Compteur2 : <b>{{counter2()}}</b></p>
+        <button type="button" (click)="incrementCounter2()">Incrémenter</button>
+        <p>computedCounter : <b>{{computedCounter()}}</b></p>
+        <p> suitableComputedCounter : <b>{{suitableComputedCounter()}}</b> </p>
+    </div>
+</section>

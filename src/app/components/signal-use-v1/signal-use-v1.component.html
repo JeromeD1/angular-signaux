@@ -2,9 +2,9 @@
 <section>
     <h1>Signaux créés avec toSignal() -> non modifiable</h1>
     <h2>appartments2_v1 = toSignal(this.signalService.appartments2$)</h2>
-    <p *ngFor="let item of appartments2_v1()">{{item.name}}</p>
+    <p *ngFor="let item of appartments2_v1()"> Nom : <b>{{item.name}}</b></p>
     <h2>appartments2_v2 = this.signalService.appartments2</h2>
-    <p *ngFor="let item of appartments2_v2()">{{item.id}}</p>
+    <p *ngFor="let item of appartments2_v2()">id : <b>{{item.id}}</b></p>
     <!-- <p *ngFor="let item of modifiableAppartments">{{item.name}}</p> -->
 </section>
 

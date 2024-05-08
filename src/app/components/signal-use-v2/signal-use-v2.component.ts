@@ -1,5 +1,4 @@
 import { Component, OnInit, Signal, WritableSignal, signal } from '@angular/core';
-import { SignalV2Service } from '../../Services/signal-v2.service';
 import { Appartment } from '../../Models/Appartment.model';
 import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -14,11 +13,9 @@ import { AppartmentSignalStateService } from '../../Services/appartment-signal-s
 })
 export class SignalUseV2Component{
 
-  constructor(private signalService: SignalV2Service, private appartService: AppartmentSignalStateService){
 
   }
 
-  name = this.appartService.select('name')
   
 /************NE FONCTIONNE PAS **********************/
   // appartments: Signal<Appartment[]> = this.signalService.getAppartments()
@@ -31,4 +28,4 @@ export class SignalUseV2Component{
   // }
 /************************************ */
 
-}
+

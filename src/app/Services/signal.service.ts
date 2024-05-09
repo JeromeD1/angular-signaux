@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, WritableSignal, computed, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { Appartment } from '../Models/Appartment.model';
 
 
@@ -42,7 +42,21 @@ export class SignalService {
       //on transforme directement l'observable en signal
       // --> problème, le signal créé est en readOnly donc on ne peut pas modifier ses valeurs par update ou set
       appartments2 = toSignal(this.appartments2$, {initialValue: []})
+     
       
+  getAppartments6a10(): Observable<{data: Appartment[]}> {
+    return this.http.get<{data: Appartment[]}>('https://api.pokemontcg.io/v2/cards?select=id,name').pipe(
+      tap(
+        (response) => {
+          this.appartments2 = signal<Appartment[]>(response.data.slice(6,10))
+          this.modifiableAppartments.set(response.data.slice(6,10))
+          console.log("appatment2 dans tap",this.appartments2());
+          console.log("modifiableAppartments dans tap",this.modifiableAppartments());
+
+        })
+        ) 
+  }
+
   updateName(appartment: Appartment): void {
     this.modifiableAppartments.update(items => items.map(item =>(
       item.id === appartment.id ? {...item, name: appartment.name} : item

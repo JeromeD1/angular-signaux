@@ -15,22 +15,19 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 })
 export class SignalUseV1Component {
 
+
   constructor(private signalService: SignalService){
     effect(() => {
-      // this.modifiableAppartments = signalService.modifiableAppartments()
       if(this.counter2() % this.counter() === 0){
         this.suitableComputedCounter.set(this.counter() * this.counter2())
         console.log("effect");
-        
-      }
+      }      
     }, {allowSignalWrites: true})
   }
 
-  //création d'une variable pour récupérer la valeur du signal modifiableAppartments du service
-  //--> on doit subscribe à l'observable pour pouvoir stocker les valeurs dans le signal
-  // et utiliser un effect pour récupérer les valeurs du signal dans une variable locale
-  // modifiableAppartments: any
   
+  //a l'initialisation du composant, si on n'a encore jamais récupéré nos appartments de l'API, on subscribe à l'observable
+  //qui gère la requete http.get et qui initialise le signal modifiableAppartments
   ngOnInit(): void {
     if(this.modifiableAppartments2().length === 0){
       this.signalService.appartments$.subscribe()
@@ -41,6 +38,7 @@ export class SignalUseV1Component {
   appartments2_v1 = toSignal(this.signalService.appartments2$)
     //recupération dans un signal de la valeur du signal signalService.appartments --> pb: readOnly aussi
   appartments2_v2 = this.signalService.appartments2
+
 
   
   //récupération de mon signal modifiableAppartments dans un signal local pour éviter de répéter this.signalService
@@ -88,14 +86,15 @@ export class SignalUseV1Component {
 
 
   
-
-  updateAppartmentName(appartment: Appartment): void {
-    console.log("appartment", appartment);
-    
-    this.signalService.updateSuitableForEveryTypeObjectWithIdTable<Appartment>(appartment, "name");
-    console.log("signal", this.modifiableAppartments2());
-    
+  //fonction permettant de mettre à jour le signal modifiableAppartments lorsque la valeur d'un input est modifié
+  //[(ngModel)] ne suffit pas ici car un signal ne peut être modifié que par une fonction update() ou set()
+  updateAppartmentName(appartment: Appartment): void {    
+    this.signalService.updateSuitableForEveryTypeObjectWithIdTable<Appartment>(appartment, "name");    
   }
 
+  //fonction permettant d'aller chercher de nouveaux appartments dans l'API pour mettre à jour mes signaux appartments
+  modifyAppartments(): void {    
+    this.signalService.getAppartments6a10().subscribe()
+  }
 
 }

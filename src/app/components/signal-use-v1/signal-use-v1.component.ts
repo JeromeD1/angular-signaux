@@ -4,11 +4,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { Appartment } from '../../Models/Appartment.model';
 import { FormsModule } from '@angular/forms';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-signal-use-v1',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatProgressSpinnerModule],
   templateUrl: './signal-use-v1.component.html',
   styleUrl: './signal-use-v1.component.scss'
 })

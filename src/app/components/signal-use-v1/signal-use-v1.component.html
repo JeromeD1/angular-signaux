@@ -2,19 +2,35 @@
 <section>
     <h1>Signaux créés avec toSignal() -> non modifiable</h1>
     <h2>appartments2_v1 = toSignal(this.signalService.appartments2$)</h2>
-    <p *ngFor="let item of appartments2_v1()"> Nom : <b>{{item.name}}</b></p>
+    <p>Le signal est créé dans le composant en convertissant l'observable appartments2$ disponible dans le service.</p>
+    @if(appartments2_v1()){
+        <p *ngFor="let item of appartments2_v1()"> Nom : <b>{{item.name}}</b></p>
+    } @else {
+        <mat-spinner style="margin: auto;"></mat-spinner>
+    }
     <h2>appartments2_v2 = this.signalService.appartments2</h2>
-    <p *ngFor="let item of appartments2_v2()">id : <b>{{item.id}}</b></p>
+    <p>L'observable appartments2$ est ici converti en signal dans le service et récupéré dans le composant.</p>
+    @if(appartments2_v2().length > 0){
+        <p *ngFor="let item of appartments2_v2()">id : <b>{{item.id}}</b></p>
+    } @else {
+        <mat-spinner style="margin: auto;"></mat-spinner>
+    }
     <!-- <p *ngFor="let item of modifiableAppartments">{{item.name}}</p> -->
 </section>
 
 <section>
     <h1>Signal modifiable dont la valeur est initialisée après la souscription à un observable</h1>
     <h2>modifiableAppartments2: WritableSignal(Appartment[]> = this.signalService.modifiableAppartments</h2>
-    <div *ngFor="let item of modifiableAppartments2()" style="display: flex; gap: 30px;">
-        <b >{{item.id}} {{item.name}} </b>
-        <input type="text" [(ngModel)]="item.name" (change)="updateAppartmentName(item)">
-    </div>
+    <p>La valeur du signal (déclaré dans le service) est mise à jour via un .pipe(tap()) une fois que la requete http a retourné une valeur.</p>
+    @if(modifiableAppartments2().length > 0){
+        <div *ngFor="let item of modifiableAppartments2()" style="display: flex; gap: 30px;">
+            <b >{{item.id}} {{item.name}} </b>
+            <input type="text" [(ngModel)]="item.name" (change)="updateAppartmentName(item)">
+        </div>
+    } @else {
+        <mat-spinner style="margin: auto;"></mat-spinner>
+    }
+    
 </section>
 
 <section>
@@ -22,7 +38,10 @@
     @if (appart1()) {
         <p>APPART 1 : <b>{{appart1()?.name}}</b></p>
     } @else {
-        <p>NO APPART 1</p>
+        <div style="margin: auto;">
+            <p>NO APPART 1</p>
+            <mat-spinner style="margin: auto;"></mat-spinner>
+        </div>
     }
 </section>
 

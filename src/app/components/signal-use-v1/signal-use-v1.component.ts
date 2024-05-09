@@ -31,7 +31,9 @@ export class SignalUseV1Component {
   // modifiableAppartments: any
   
   ngOnInit(): void {
-    this.signalService.appartments$.subscribe()
+    if(this.modifiableAppartments2().length === 0){
+      this.signalService.appartments$.subscribe()
+    }
   }
 
   //recupération dans un signal de la valeur de l'observable signalService.appartments2$ --> pb: readOnly

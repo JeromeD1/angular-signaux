@@ -23,7 +23,6 @@ export class SignalService {
       return {...appart1, name: `computed_${appart1.name}_ofID_${appart1.id}`}
     } else {
       console.log("modifiableAppartments in computed", this.modifiableAppartments());
-
       return null
     }
   })

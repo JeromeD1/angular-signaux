@@ -47,7 +47,7 @@ export class SignalUseV1Component {
   appart1 = this.signalService.appartment1WithModifiedName
 
   //création d'un signal counter
-  counter = signal<number>(0)
+  counter = signal<number>(0)  
 
   //fonction pour incrémenter la valeur du signal counter
   incrementCounter():void {
@@ -55,7 +55,7 @@ export class SignalUseV1Component {
   }
 
   //création d'un signal counter
-  counter2 = signal<number>(0)
+  counter2: WritableSignal<number> = signal(0)
 
   //fonction pour incrémenter la valeur du signal counter
   incrementCounter2():void {

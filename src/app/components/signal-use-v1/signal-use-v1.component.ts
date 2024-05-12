@@ -100,8 +100,14 @@ export class SignalUseV1Component implements OnInit, OnDestroy {
   }
 
   //fonction permettant d'aller chercher de nouveaux appartments dans l'API pour mettre à jour mes signaux appartments
+  //modifiableAppartments est modifié dans le .pipe() dans signalService
+  //et je modifie la variable locale appartmentsFromSubscription via le subscribe
   modifyAppartments(): void {    
-    this.signalService.getAppartments6a10().subscribe()
+    this.signalService.getAppartments6a10().subscribe(
+      {
+        next: response => this.appartmentsFromSubscription = response.data.slice(11,16)
+      }
+    )
   }
 
   ngOnDestroy(): void {

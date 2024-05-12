@@ -74,5 +74,9 @@ export class SignalService {
     )))
   }
 
+  addAppartment(apparment: Appartment): void {
+    this.modifiableAppartments.update(value => [...value, apparment])
+  }
+
 
 }

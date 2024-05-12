@@ -1,31 +1,47 @@
-import { Component, OnInit, Signal, WritableSignal, signal } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { Appartment } from '../../Models/Appartment.model';
 import { CommonModule } from '@angular/common';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { AppartmentSignalStateService } from '../../Services/appartment-signal-state.service';
+import { SignalService } from '../../Services/signal.service';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-signal-use-v2',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './signal-use-v2.component.html',
   styleUrl: './signal-use-v2.component.scss'
 })
 export class SignalUseV2Component{
 
+  signalService: SignalService = inject(SignalService)
+
+  originalAppartments: Appartment[] = this.signalService.modifiableAppartments()
+  appartments: Appartment[] = this.signalService.modifiableAppartments()
+
+  myForm = inject(FormBuilder).group({
+    id: [0],
+    name: ['']
+  })
+
+  constructor(){
+    effect(()=> {
+      this.appartments = this.signalService.modifiableAppartments()
+    })
+  }
+
+  addAppartment():void {
+    if(this.myForm.value.id && this.myForm.value.name){
+      const formData: Appartment = {
+        id: this.myForm.value.id,
+        name: this.myForm.value.name
+      } 
+
+      this.signalService.addAppartment(formData)
+    }
+  }
 
   }
 
-  
-/************NE FONCTIONNE PAS **********************/
-  // appartments: Signal<Appartment[]> = this.signalService.getAppartments()
-  // modifiableAppartments: WritableSignal<Appartment[]> = signal(this.signalService.getAppartments()())
-
-  // modifyAppartments(): void {
-    
-  //   this.modifiableAppartments.update((value) => value.map((item) => ({...item, name: item.name + "_" + item.id})) )
-
-  // }
-/************************************ */
+ 
 
 

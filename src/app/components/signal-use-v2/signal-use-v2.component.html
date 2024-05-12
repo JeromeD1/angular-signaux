@@ -1,5 +1,27 @@
 <p>signal-use-v2 works!</p>
-<!-- <p *ngFor="let appartment of appartments()">{{appartment.name}} </p>
-<button type="button"  (click)="modifyAppartments()">Modifier le nom</button>
-<p *ngFor="let appartment of modifiableAppartments()">{{appartment.name}} </p>
- -->
+
+<section>
+    <h1>Vérification mise à jour des variables avec effect()</h1>
+    <h2>originalAppartments: Appartment[] = this.signalService.modifiableAppartments()</h2>
+    <p>La valeur du signal modifiableAppartments est récupérée dans originalAppartments</p>
+    @if(originalAppartments.length > 0){
+        <p *ngFor="let item of originalAppartments">Original - id : <b>{{item.id}}</b> Nom : <b>{{item.name}}</b></p>
+    } @else {
+        <h1 style="color: red;">Veuillez passer par la page signal V1 pour charger les appartments</h1>
+    }
+    <hr>
+    <h2>appartments: Appartment[] = this.signalService.modifiableAppartments()</h2>
+    <p>La valeur du signal modifiableAppartments est récupérée dans appartments, cependant ici effect permet de mettre à jour la variable locale lorsque le signal est modifié.</p>
+    @if(appartments.length > 0){
+        <p *ngFor="let item of appartments">Ajournable - id : <b>{{item.id}}</b> Nom : <b>{{item.name}}</b></p>
+    } @else {
+        <h1 style="color: red;">Veuillez passer par la page signal V1 pour charger les appartments</h1>
+    }
+</section>
+
+<form [formGroup]="myForm" (ngSubmit)="addAppartment()">
+    <h1>Ajout d'un appartment</h1>
+    <input type="number" formControlName="id" placeholder="Choisissez un id">
+    <input type="text" formControlName="name" placeholder="Choisissez un nom">
+    <button type="submit">Ajouter</button>
+</form>

@@ -1,10 +1,11 @@
-import { Component, WritableSignal, computed, effect, signal, untracked } from '@angular/core';
+import { Component, OnDestroy, OnInit, WritableSignal, computed, effect, signal, untracked } from '@angular/core';
 import { SignalService } from '../../Services/signal.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { Appartment } from '../../Models/Appartment.model';
 import { FormsModule } from '@angular/forms';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-signal-use-v1',
@@ -13,9 +14,11 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
   templateUrl: './signal-use-v1.component.html',
   styleUrl: './signal-use-v1.component.scss'
 })
-export class SignalUseV1Component {
+export class SignalUseV1Component implements OnInit, OnDestroy {
 
-
+  appartmentsFromSubscription: Appartment[] = []
+  destroy$: Subject<void> = new Subject()
+ 
   constructor(private signalService: SignalService){
     effect(() => {
       if(this.counter2() % this.counter() === 0){
@@ -30,7 +33,11 @@ export class SignalUseV1Component {
   //qui gère la requete http.get et qui initialise le signal modifiableAppartments
   ngOnInit(): void {
     if(this.modifiableAppartments2().length === 0){
-      this.signalService.appartments$.subscribe()
+      this.signalService.appartments$.pipe(takeUntil(this.destroy$)).subscribe(
+        {
+          next: response => this.appartmentsFromSubscription = response.data.slice(4,9)
+        }
+      )
     }
   }
 
@@ -95,6 +102,11 @@ export class SignalUseV1Component {
   //fonction permettant d'aller chercher de nouveaux appartments dans l'API pour mettre à jour mes signaux appartments
   modifyAppartments(): void {    
     this.signalService.getAppartments6a10().subscribe()
+  }
+
+  ngOnDestroy(): void {
+      this.destroy$.next()
+      this.destroy$.complete()
   }
 
 }

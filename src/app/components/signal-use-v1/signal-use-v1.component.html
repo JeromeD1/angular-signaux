@@ -21,6 +21,18 @@
 </section>
 
 <section>
+    <h1>Varriable locale "appartmentsFromSubscription" mise à jour lors de la subscription dans ngOnInit </h1>
+    @if(appartmentsFromSubscription.length > 0){
+        <div *ngFor="let item of appartmentsFromSubscription" style="display: flex; gap: 30px;">
+            <b >appartmentsFromSubscription - {{item.id}} {{item.name}} </b>
+        </div>
+    } @else {
+        <mat-spinner style="margin: auto;"></mat-spinner>
+    }
+    
+</section>
+
+<section>
     <h1>Signal modifiable dont la valeur est initialisée après la souscription à un observable</h1>
     <h2>modifiableAppartments2: WritableSignal(Appartment[]> = this.signalService.modifiableAppartments</h2>
     <p>La valeur du signal (déclaré dans le service) est mise à jour via un .pipe(tap()) une fois que la requete http a retourné une valeur.</p>
